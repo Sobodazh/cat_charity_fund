@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.base_model import BaseModel
 
 
-async def calculation(obj_create: BaseModel, obj_in: BaseModel):
+async def sum_calc(obj_create: BaseModel, obj_in: BaseModel):
     money_left_project = obj_create.full_amount - obj_create.invested_amount
     money_left_donation = obj_in.full_amount - obj_in.invested_amount
     if money_left_project > money_left_donation:
@@ -22,7 +22,7 @@ async def calculation(obj_create: BaseModel, obj_in: BaseModel):
         obj_create.fully_invested = True
         obj_in.close_date = datetime.now()
         obj_create.close_date = datetime.now()
-    else:  # money_left_proj < money_left_donat
+    else:
         obj_in.invested_amount += money_left_project
         obj_create.invested_amount = obj_create.full_amount
         obj_create.fully_invested = True
@@ -42,7 +42,7 @@ async def investment(
     )
     donations_left = donations_left.scalars().all()
     for donation in donations_left:
-        charity, donation = await calculation(obj_create, donation)
+        charity, donation = await sum_calc(obj_create, donation)
         session.add(charity)
         session.add(donation)
     await session.commit()
