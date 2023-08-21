@@ -13,6 +13,8 @@ from app.core.db import get_async_session
 from app.models.user import User
 from app.schemas.user import UserCreate
 
+MIN_LENGTH_OF_PASSWORD = 3
+
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)
@@ -37,7 +39,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         password: str,
         user: Union[UserCreate, User],
     ) -> None:
-        if len(password) < 3:
+        if len(password) < MIN_LENGTH_OF_PASSWORD:
             raise InvalidPasswordException(
                 reason='Password should be at least 3 characters'
             )

@@ -5,10 +5,6 @@ from sqlalchemy import Boolean, Column, DateTime, Integer
 from app.core.db import Base
 
 
-def time_now():
-    return datetime.now()
-
-
 class BaseModel(Base):
 
     __abstract__ = True
@@ -16,5 +12,5 @@ class BaseModel(Base):
     full_amount = Column(Integer, nullable=False)
     invested_amount = Column(Integer, default=0)
     fully_invested = Column(Boolean, default=False)
-    create_date = Column(DateTime, default=time_now)
+    create_date = Column(DateTime, default=datetime.utcnow)
     close_date = Column(DateTime, default=None, nullable=True)

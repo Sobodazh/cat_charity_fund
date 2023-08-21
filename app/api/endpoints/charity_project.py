@@ -38,8 +38,7 @@ async def create_new_project(
 async def get_all_projects(
         session: AsyncSession = Depends(get_async_session)
 ):
-    projects = await project_crud.get_multi(session)
-    return projects
+    return await project_crud.get_multi(session)
 
 
 @router.patch(
@@ -79,7 +78,6 @@ async def remove_project(
         project_id, session
     )
     await donations_exists(project_id, session)
-    project = await project_crud.remove(
+    return await project_crud.remove(
         project, session
     )
-    return project

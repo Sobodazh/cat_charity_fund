@@ -64,15 +64,12 @@ class CRUDProject(CRUDBase):
         project_name: str,
         session: AsyncSession,
     ) -> Optional[int]:
-        # Получаем объект класса Result.
         db_project_id = await session.execute(
             select(CharityProject.id).where(
                 CharityProject.name == project_name
             )
         )
-        # Извлекаем из него конкретное значение.
-        db_project_id = db_project_id.scalars().first()
-        return db_project_id
+        return db_project_id.scalars().first()
 
 
 project_crud = CRUDProject(CharityProject)

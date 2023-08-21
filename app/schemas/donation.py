@@ -3,13 +3,16 @@ from typing import Optional
 
 from pydantic import BaseModel, Extra, Field, PositiveInt
 
-FROM_TIME = datetime.now().isoformat(timespec='minutes')
+AMOUNT_DAYS_FOR_EXAMPLE = 1
+FROM_TIME = datetime.utcnow().isoformat(timespec='minutes')
 
-TO_TIME = (datetime.now() + timedelta(days=1)).isoformat(timespec='minutes')
+TO_TIME = ((datetime.utcnow() +
+            timedelta(days=AMOUNT_DAYS_FOR_EXAMPLE)).isoformat(timespec='minutes'))
+FOR_EXAMPLE = 1
 
 
 class DonationCreate(BaseModel):
-    full_amount: PositiveInt = Field(..., example=1)
+    full_amount: PositiveInt = Field(..., example=FOR_EXAMPLE)
     comment: Optional[str]
 
     class Config:
